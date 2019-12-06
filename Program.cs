@@ -7,9 +7,8 @@ namespace AdventOfCode_2019
         
         static void Main(string[] args)
         {
-            string range = "359282-820401";
-            PasswordFinder finder = new PasswordFinder(range);
-            Console.WriteLine(finder.ValidPasswordCount());
+            IntcodeComputer computer = new IntcodeComputer(IntcodeComputer.DaysOfChallenge.day5);
+
         }
 
         //public int[] cellCompete(int[] states, int days)
