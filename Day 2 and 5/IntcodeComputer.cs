@@ -11,7 +11,6 @@ namespace AdventOfCode_2019
         private int[] OpCodes { get; set; }
         public int Input { get; set; }
         public List<int> diagnosticCodes = new List<int>();
-        public int LastCode { get; set; }
         public char Mode1 { get; set; } = '0';
         public char Mode2 { get; set; } = '0';
         public int Value1 { get; set; }
