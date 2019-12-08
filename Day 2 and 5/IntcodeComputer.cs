@@ -45,38 +45,9 @@ namespace AdventOfCode_2019
             for (int i = 0; i < OpCodes.Length; i += jump + 1)
             {
                 if (ShouldTerminate(OpCodes[i].ToString())) { break; }
-                int newPosition = 0;
-                bool needsToJump = ShouldJump(OpCodes[i].ToString(), i, out newPosition);
-                if (needsToJump)
-                {
-                    i = newPosition;
-                    ResetModes();
-                    jump = -1;
-                    continue;
-                }
                 Mutate(OpCodes[i].ToString(), i, out jump);
                 ResetModes();
             }
-        }
-
-        private bool ShouldJump(string opCode, int currentPosition, out int position)
-        {
-            int code = 0;
-            SetModes(opCode);
-            SetValues(currentPosition);
-            position = currentPosition;
-            code = ParseCode(opCode);
-            if (code == 5 && Value1 != 0)
-            {
-                position = Value2;
-                return true;
-            }
-            if (code == 6 && Value1 == 0)
-            {
-                position = Value2;
-                return true;
-            }
-            return false;
         }
 
         private void Mutate(string opCode, int currentPos, out int paramCount)
@@ -87,7 +58,7 @@ namespace AdventOfCode_2019
             SetValues(currentPos);
             code = ParseCode(opCode);
 
-            var positionToMutate = OpCodes[currentPos + 3];
+            int positionToMutate = OpCodes[currentPos + 3];
 
             switch (code)
             {
@@ -105,9 +76,14 @@ namespace AdventOfCode_2019
                     paramCount = 1;
                     break;
                 case 4:
-                    positionToMutate = GetPosition(Mode1, currentPos + 1);
-                    diagnosticCodes.Add(OpCodes[Value1]);
+                    diagnosticCodes.Add(Value1);
                     paramCount = 1;
+                    break;
+                case 5:
+                    paramCount = Value1 != 0 ? Math.Abs(currentPos + 1 - Value2) : 2;
+                    break;
+                case 6:
+                    paramCount = Value1 == 0 ? Math.Abs(currentPos + 1 - Value2) : 2;
                     break;
                 case 7:
                     OpCodes[positionToMutate] = Value1 < Value2 ? 1 : 0;
@@ -125,8 +101,8 @@ namespace AdventOfCode_2019
 
         private void SetValues(int currentPosition)
         {
-            Value1 = SetValue(Mode1, OpCodes[currentPosition + 1]);
-            Value2 = SetValue(Mode2, OpCodes[currentPosition + 2]);
+            Value1 = SetValue(Mode1, OpCodes[++currentPosition]);
+            Value2 = SetValue(Mode2, OpCodes[++currentPosition]);
         }
 
         private int SetValue(char mode, int param) => mode == '0' ? OpCodes[param] : param;
