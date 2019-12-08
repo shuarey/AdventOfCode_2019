@@ -49,7 +49,7 @@ namespace AdventOfCode_2019
             }
         }
 
-        private void Mutate(string opCode, int currentPos, out int paramCount)
+        private void Mutate(string opCode, int currentPos, out int jumpCount)
         {
             int code = 0;
 
@@ -63,37 +63,37 @@ namespace AdventOfCode_2019
             {
                 case 1:
                     OpCodes[positionToMutate] = Value1 + Value2;
-                    paramCount = 3;
+                    jumpCount = 3;
                     break;
                 case 2:
                     OpCodes[positionToMutate] = Value1 * Value2;
-                    paramCount = 3;
+                    jumpCount = 3;
                     break;
                 case 3:
                     positionToMutate = GetPosition(Mode1, currentPos + 1);
                     OpCodes[positionToMutate] = Input;
-                    paramCount = 1;
+                    jumpCount = 1;
                     break;
                 case 4:
                     diagnosticCodes.Add(Value1);
-                    paramCount = 1;
+                    jumpCount = 1;
                     break;
                 case 5:
-                    paramCount = Value1 != 0 ? Math.Abs(currentPos + 1 - Value2) : 2;
+                    jumpCount = Value1 != 0 ? Math.Abs(currentPos + 1 - Value2) : 2;
                     break;
                 case 6:
-                    paramCount = Value1 == 0 ? Math.Abs(currentPos + 1 - Value2) : 2;
+                    jumpCount = Value1 == 0 ? Math.Abs(currentPos + 1 - Value2) : 2;
                     break;
                 case 7:
                     OpCodes[positionToMutate] = Value1 < Value2 ? 1 : 0;
-                    paramCount = 3;
+                    jumpCount = 3;
                     break;
                 case 8:
                     OpCodes[positionToMutate] = Value1 == Value2 ? 1 : 0;
-                    paramCount = 3;
+                    jumpCount = 3;
                     break;
                 default:
-                    paramCount = 0;
+                    jumpCount = 0;
                     break;
             }
         }
